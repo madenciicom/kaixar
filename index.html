@@ -1,1 +1,80 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kai vs Xar — Stickman Savaş</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <div id="brand">Kai vs Xar</div>
+    <div id="hdr-controls">
+      <button id="btn-save">Kaydet</button>
+      <button id="btn-load">Yükle</button>
+      <button id="btn-export">Dışa Aktar</button>
+      <button id="btn-import">İçe Aktar</button>
+    </div>
+  </header>
 
+  <main id="app">
+    <section id="left">
+      <div id="canvasWrap">
+        <!-- SVG canvas rendered by UI -->
+      </div>
+
+      <div id="combatControls">
+        <button id="attackBtn" class="primary">Saldır</button>
+        <button id="skillBtn" class="primary">Özel</button>
+        <button id="fleeBtn" class="secondary">Kaç</button>
+      </div>
+
+      <div id="dialogueArea">
+        <div id="dialogText"></div>
+        <div id="dialogChoices"></div>
+      </div>
+    </section>
+
+    <aside id="right">
+      <div class="card">
+        <h3>Durum</h3>
+        <p>Bölüm: <span id="levelNum">1</span> / 10</p>
+        <p>XP: <span id="xp">0</span></p>
+        <p>HP: <span id="hp">40</span> / <span id="hpMax">40</span></p>
+        <p>Silah: <span id="weaponName">Çubuk</span></p>
+      </div>
+
+      <div class="card">
+        <h3>Hızlı Menü</h3>
+        <button id="btn-start" class="primary">Bölümü Başlat</button>
+        <button id="btn-next" class="secondary">Sonraki Bölüm</button>
+        <button id="btn-reset" class="danger">Reset</button>
+      </div>
+
+      <div class="card">
+        <h3>Log</h3>
+        <div id="log"></div>
+      </div>
+
+      <div class="card">
+        <h3>Easter Eggs</h3>
+        <p>Sağ üst marka yazısına 5 kez dokun.</p>
+        <p>Bir diğer: gizli "rahat" buton — oyunda bulabilirsiniz 😉</p>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <small>Prototype — Mobil & Web. GitHub: kai-vs-xar-game</small>
+  </footer>
+
+  <input id="fileInput" type="file" accept="application/json" style="display:none" />
+
+  <script src="js/ui.js"></script>
+  <script src="js/save.js"></script>
+  <script src="js/dialogue.js"></script>
+  <script src="js/combat.js"></script>
+  <script src="js/app.js"></script>
+</body>
+  </html>
