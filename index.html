@@ -1,29 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Kai vs Xar - Savaş Oyunu</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kai vs Xar</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-    <h1>Kai'nin Macerası</h1>
+    <h1>Kai vs Xar — Hikayeli Savaş Oyunu</h1>
 
-    <div id="scene"></div>
+    <div id="game-container">
 
-    
+        <div id="scene">
+            <!-- Çöp adam sahnesi UI.js tarafından doldurulacak -->
+        </div>
 
-    <div id="choices"></div>
+        <div id="dialogue">
+            <!-- Hikâye metinleri buraya gelecek -->
+        </div>
 
-    <h2>Günlük</h2>
-    <div id="log"></div>
+        <div id="choices">
+            <!-- Seçim butonları buraya gelecek -->
+        </div>
 
+        <h2>Günlük</h2>
+        <div id="log"></div>
+
+    </div>
+
+    <!-- SCRIPTS -->
     <script src="ui.js"></script>
+    <script src="game.js"></script>
     <script src="combat.js"></script>
     <script src="chapters.js"></script>
-    <script src="game.js"></script>
 
 </body>
 </html>
