@@ -1,1 +1,150 @@
 
+/* style.css - temiz, mobil-öncelikli stil */
+
+/* Renkler */
+:root {
+  --bg: #0f1114;
+  --panel: #14171a;
+  --card: #16191c;
+  --accent: #f39c12;
+  --muted: #9aa0a6;
+  --white: #ffffff;
+}
+
+/* Reset basit */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html,body { height: 100%; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  background: linear-gradient(180deg, var(--bg), #071019);
+  color: var(--white);
+  padding: 12px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Başlık */
+h1 {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 12px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: var(--white);
+}
+
+/* SAHNE: karakterlerin gösterildiği alan */
+#scene {
+  width: 100%;
+  min-height: 160px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.03));
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+}
+
+/* Basit stickman kutu (görsel placeholder) */
+.stickman {
+  width: 76px;
+  height: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.03);
+  padding: 6px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--white);
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* head circle (CSS-based simple) */
+.stickman .head {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--white);
+  opacity: 0.95;
+}
+
+/* body lines placeholder */
+.stickman .body {
+  width: 2px;
+  height: 36px;
+  background: var(--white);
+  opacity: 0.95;
+}
+
+/* DIALOG alanı */
+#dialogue {
+  background: var(--card);
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 16px;
+  line-height: 1.4;
+  margin-bottom: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+}
+
+/* Seçimler (butonlar) */
+#choices {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+/* Buton stili */
+#choices button,
+#choices .choice-btn {
+  background: linear-gradient(180deg, var(--accent), #d88700);
+  color: #081014;
+  border: none;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.45);
+}
+
+#choices button.secondary {
+  background: transparent;
+  color: var(--white);
+  border: 1px solid rgba(255,255,255,0.06);
+  font-weight: 600;
+}
+
+/* Günlük / log */
+#log {
+  background: rgba(0,0,0,0.22);
+  padding: 10px;
+  border-radius: 10px;
+  max-height: 180px;
+  overflow-y: auto;
+  font-size: 13px;
+  color: var(--muted);
+  border: 1px solid rgba(255,255,255,0.02);
+}
+
+/* küçük ekranlar için ayarlar */
+@media (max-width: 720px) {
+  body { padding: 10px; }
+  .stickman { width: 64px; height: 84px; font-size: 11px; }
+  #dialogue { font-size: 15px; padding: 10px; }
+  #choices button { padding: 12px; font-size: 15px; }
+}
+
+/* daha geniş ekranlarda biraz merkezleme */
+@media (min-width: 900px) {
+  body { display: flex; justify-content: center; }
+  main, #app { max-width: 980px; width: 100%; }
+}
