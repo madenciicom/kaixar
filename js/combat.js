@@ -1,81 +1,114 @@
-// Savaşın bitişi
-function combatEnd(victory, nextChapter) {
-    if (victory) {
-        UI.setDialogue(
-            "Zafer! Devam et.",
-            [
-                { label: "Devam", action: () => showChapter(nextChapter) }
-            ]
-        );
-    } else {
-        UI.setDialogue(
-            "Kaybettin... Tekrar dene.",
-            [
-                { label: "Yeniden Başla", action: () => startCombat(lastEnemy, nextChapter) }
-            ]
-        );
-    }
-}
-let player = { hp: 100 };
-let enemyData = {};
-let nextChapterAfterFight = 1;
-let lastEnemy = {};
+/* combat.js – Basit çöp adam savaş sistemi */
 
-function startCombat(enemy, nextChap) {
-    enemyData = enemy;
-    nextChapterAfterFight = nextChap;
-    lastEnemy = enemy;
+function startCombat(enemyName, enemyHp) {
+    const enemy = {
+        name: enemyName,
+        hp: enemyHp
+    };
 
-    UI.renderScene(player, enemyData);
+    UI.log(`${enemy.name} ortaya çıktı!`);
+
+    UI.renderScene(player, enemy);
 
     UI.setDialogue(
-        enemy.name + " saldırdı! Hazır mısın?",
+        `${enemy.name} ile karşı karşıyasın!`,
         [
-            { label: "Saldır", action: attackEnemy },
-            { label: "Savun", action: defend },
-            { label: "Özel Vuruş", action: special }
+            { label: "Saldır", action: () => attackEnemy(enemy) },
+            { label: "Savun", action: defendTurn },
+            { label: "Kaç", action: runAway }
         ]
     );
 }
 
-function attackEnemy() {
-    enemyData.hp -= 15;
-    checkFight();
-}
+function attackEnemy(enemy) {
+    let dmg = Math.floor(10 + player.strengthBoost);
 
-function defend() {
-    player.hp += 5;
-    if (player.hp > 100) player.hp = 100;
-    enemyData.hp -= 5;
-    checkFight();
-}
+    enemy.hp -= dmg;
+    UI.log(`Kai vurdu: -${dmg} HP`);
+    UI.renderScene(player, enemy);
 
-function special() {
-    enemyData.hp -= 25;
-    checkFight();
-}
-
-function checkFight() {
-    if (enemyData.hp <= 0) {
-        combatEnd(true, nextChapterAfterFight);
+    if (enemy.hp <= 0) {
+        UI.log(`${enemy.name} yenildi!`);
+        UI.setDialogue(`${enemy.name} düştü.`, [
+            { label: "Devam Et", action: () => nextChapterAfterFight() }
+        ]);
         return;
     }
 
-    // düşman saldırısı
-    player.hp -= 10;
+    enemyTurn(enemy);
+}
+
+function defendTurn() {
+    UI.log("Kai savunmaya geçti!");
+    player.defenseBoost += 5;
+
+    setTimeout(() => {
+        UI.log("Savunma etkisi geçti.");
+        player.defenseBoost = 0;
+    }, 1000);
+
+    UI.setDialogue("Savunuyorsun...", []);
+    setTimeout(() => nextEnemyTurnAuto(), 800);
+}
+
+function runAway() {
+    UI.log("Kai kaçmaya çalıştı...");
+
+    let chance = Math.random();
+    if (chance > 0.6) {
+        UI.log("Başarıyla kaçtın!");
+        UI.setDialogue("Kurtuldun.", [
+            { label: "Devam Et", action: () => nextChapterAfterFight() }
+        ]);
+    } else {
+        UI.log("Kaçamadan yakalandın!");
+        nextEnemyTurnAuto();
+    }
+}
+
+function enemyTurn(enemy) {
+    let dmg = Math.floor(8 - player.defenseBoost);
+    if (dmg < 1) dmg = 1;
+
+    player.hp -= dmg;
+    UI.log(`${enemy.name} vurdu: -${dmg} HP`);
 
     if (player.hp <= 0) {
-        combatEnd(false, nextChapterAfterFight);
+        UI.log("Kai yere düştü...");
+        UI.setDialogue("Kaybettin...", [
+            { label: "Tekrar Dene", action: () => goToChapter(1) }
+        ]);
         return;
     }
 
-    UI.renderScene(player, enemyData);
-    UI.setDialogue(
-        "Saldırı / Savunma seç:",
-        [
-            { label: "Saldır", action: attackEnemy },
-            { label: "Savun", action: defend },
-            { label: "Özel", action: special }
-        ]
-    );
-        }
+    UI.setDialogue("Hamleni seç:", [
+        { label: "Saldır", action: () => attackEnemy(enemy) },
+        { label: "Savun", action: defendTurn },
+        { label: "Kaç", action: runAway }
+    ]);
+}
+
+function nextEnemyTurnAuto() {
+    UI.log("Düşman hamle yaptı!");
+    // Burada basit hasar veriyoruz
+    player.hp -= 5;
+
+    if (player.hp <= 0) {
+        UI.log("Kai dayanamadı...");
+        UI.setDialogue("Kaybettin!", [
+            { label: "Tekrar Dene", action: () => goToChapter(1) }
+        ]);
+        return;
+    }
+
+    UI.setDialogue("Hamleni seç:", [
+        { label: "Saldır", action: () => attackEnemy(currentEnemy) },
+        { label: "Savun", action: defendTurn },
+        { label: "Kaç", action: runAway }
+    ]);
+}
+
+/* Savaş bittikten sonra bölüm değişimi buradan yapılır */
+function nextChapterAfterFight() {
+    goToChapter(currentChapter + 1);
+}
