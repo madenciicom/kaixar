@@ -1,29 +1,32 @@
-// Basit UI yöneticisi
+/* ui.js – Tüm oyun ekranını yöneten sistem */
 const UI = {
     dialogueBox: null,
     choicesBox: null,
     logBox: null,
+    sceneBox: null,
 
     init() {
         this.dialogueBox = document.getElementById("dialogue");
         this.choicesBox = document.getElementById("choices");
         this.logBox = document.getElementById("log");
+        this.sceneBox = document.getElementById("scene");
     },
 
-    // Diyalog yazdırma
+    /* Diyalog ve butonları gösterir */
     setDialogue(text, choices = []) {
         this.dialogueBox.innerText = text;
 
         this.choicesBox.innerHTML = "";
-        choices.forEach(choice => {
+        choices.forEach(c => {
             const btn = document.createElement("button");
-            btn.innerText = choice.label;
-            btn.onclick = choice.action;
+            btn.className = "choice-btn";
+            btn.innerText = c.label;
+            btn.onclick = c.action;
             this.choicesBox.appendChild(btn);
         });
     },
 
-    // Log alanına bilgi ekleme
+    /* Oyun günlüğüne yazı ekler */
     log(text) {
         const p = document.createElement("p");
         p.innerText = text;
@@ -31,18 +34,24 @@ const UI = {
         this.logBox.scrollTop = this.logBox.scrollHeight;
     },
 
-    // Sahne (karakter + düşman) çizimi
-    renderScene(playerData = {}, enemyData = {}) {
-        const scene = document.getElementById("scene");
+    /* Sahne (Kai vs düşman) */
+    renderScene(player = {}, enemy = {}) {
+        this.sceneBox.innerHTML = `
+            <div class="stickman">
+                <div class="head"></div>
+                <div class="body"></div>
+                <span>${player.name || ""}</span>
+            </div>
 
-        scene.innerHTML = `
-            <div class="stickman player">${playerData.name || ""}</div>
-            <div class="stickman enemy">${enemyData.name || ""}</div>
+            <div class="stickman">
+                <div class="head"></div>
+                <div class="body"></div>
+                <span>${enemy.name || ""}</span>
+            </div>
         `;
     }
 };
 
-// Sayfa yüklenince UI çalışsın
 window.onload = () => {
     UI.init();
 };
